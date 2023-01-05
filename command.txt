@@ -6,4 +6,14 @@ http://localhost:9101/
 docker run -d --name node-exporter2 -p 9102:9100 --network monitor bitnami/node-exporter:latest
 docker run -d --name node-exporter3 -p 9103:9100 --network monitor bitnami/node-exporter:latest
 docker ps | grep node-exporter
-
+docker run -d --name prometheus -p 9090:9090 --network monitor \
+-v $(pwd)/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml \
+bitnami/prometheus:latest
+http://localhost:9090
+node_cpu_seconds_total
+node_cpu_seconds_total{instance="node-exporter2:9100"}
+//node_ipvs_connections_total
+touch pythonserver.py
+touch Dockerfile
+docker build -t pythonserver .
+docker run -d --name pythonserver -p 8081:8080 --network monitor pythonserver
