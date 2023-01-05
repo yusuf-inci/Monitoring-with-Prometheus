@@ -1,0 +1,9 @@
+docker pull bitnami/node-exporter:latest
+docker pull bitnami/prometheus:latest
+docker network create monitor
+docker run -d --name node-exporter1 -p 9101:9100 --network monitor bitnami/node-exporter:latest
+http://localhost:9101/
+docker run -d --name node-exporter2 -p 9102:9100 --network monitor bitnami/node-exporter:latest
+docker run -d --name node-exporter3 -p 9103:9100 --network monitor bitnami/node-exporter:latest
+docker ps | grep node-exporter
+
