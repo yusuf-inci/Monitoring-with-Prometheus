@@ -1,19 +1,41 @@
+to pull down the bitnami/node-exporter image from Docker Hub
 docker pull bitnami/node-exporter:latest
+
+to pull down the bitnami/prometheus image from Docker Hub
 docker pull bitnami/prometheus:latest
+
+to create a Docker network for all of the node exporters and Prometheus to communicate on
 docker network create monitor
+
+to start three node exporter instances on the monitor network, listening at port 9101 externally and forwarding to port 9100 internally.
 docker run -d --name node-exporter1 -p 9101:9100 --network monitor bitnami/node-exporter:latest
-http://localhost:9101/
 docker run -d --name node-exporter2 -p 9102:9100 --network monitor bitnami/node-exporter:latest
 docker run -d --name node-exporter3 -p 9103:9100 --network monitor bitnami/node-exporter:latest
-docker ps | grep node-exporter
+docker run -d --name pythonserver -p 8081:8080 --network monitor yusufinci/pythonserver:v1
+
+to launch the Prometheus monitor 
 docker run -d --name prometheus -p 9090:9090 --network monitor \
 -v $(pwd)/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml \
 bitnami/prometheus:latest
+
+to launch the Prometheus web UI in an external browser window and navigate to the page where you start executing queries.
 http://localhost:9090
+
+The Prometheus application UI opens up by default in the graph endpoint.
+in the Prometheus application, click Status on the menu and choose Targets to see which targets are being monitored.
+View the status of all three node exporters
+Click Graph to return to the home page.
+Ensure you are on the Graph tab, and then paste the following queries and press the Execute button on the right. You can observe the details for each instance by hovering the mouse over that instance.
 node_cpu_seconds_total
-node_cpu_seconds_total{instance="node-exporter2:9100"}
-//node_ipvs_connections_total
-touch pythonserver.py
-touch Dockerfile
-docker build -t pythonserver .
-docker run -d --name pythonserver -p 8081:8080 --network monitor pythonserver
+node_cpu_seconds_total{instance="node-exporter3:9100"}
+
+to generate some network traffic use following command several times
+curl localhost:8081 && curl localhost:8081/home && curl localhost:8081/contact 
+
+Use the Prometheus UI to query for the following metrics.
+flask_http_request_duration_seconds_bucket
+flask_http_request_total
+process_virtual_memory_bytes
+
+to view all of the metrics that the application is emitting, open /metrics endpoint
+http://localhost:8081/metrics

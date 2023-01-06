@@ -7,11 +7,11 @@ metrics.init_app(app)
 
 @app.route('/')
 def root():
-    return 'Hello from Yu5uf!'
+    return 'Hello from Yu5uf!  '
 
 @app.route('/home')
 def home():
-    return 'Hello from home!'
+    return 'Hello from home!  '
 
 @app.route('/contact')
 def contact():
