@@ -1,6 +1,6 @@
 # Monitoring-with-Prometheus
 Monitoring with Prometheus to monitor sample servers simulated with node exporter and a Python Flask application.
-In this repo is prepared for become familiar with using Prometheus to monitor sample servers simulated with node exporter. You will use Prometheus to monitor the target node_exporter application that is configured by scraping metrics endpoints of the node_exporter and learning how to instrument a Python Flask application to emit metrics and deploy that application so that Prometheus can monitor it.
+This repo is prepared for become familiar with using Prometheus to monitor sample servers simulated with node exporter. You will use Prometheus to monitor the target node_exporter application that is configured by scraping metrics endpoints of the node_exporter and learning how to instrument a Python Flask application to emit metrics and deploy that application so that Prometheus can monitor it.
 # Objectives
 Configure the targets for Prometheus to monitor
 Create queries to get the metrics about the target
