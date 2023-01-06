@@ -1,19 +1,13 @@
-to pull down the bitnami/node-exporter image from Docker Hub
-docker pull bitnami/node-exporter:latest
-
-to pull down the bitnami/prometheus image from Docker Hub
-docker pull bitnami/prometheus:latest
-
 to create a Docker network for all of the node exporters and Prometheus to communicate on
 docker network create monitor
 
-to start three node exporter instances on the monitor network, listening at port 9101 externally and forwarding to port 9100 internally.
+to start three node exporter instances on the monitor network, listening at port 9101 externally and forwarding to port 9100 internally and pythonserver instances on the monitor network, listening at port 8081 externally and forwarding to port 8080 internally.
 docker run -d --name node-exporter1 -p 9101:9100 --network monitor bitnami/node-exporter:latest
 docker run -d --name node-exporter2 -p 9102:9100 --network monitor bitnami/node-exporter:latest
 docker run -d --name node-exporter3 -p 9103:9100 --network monitor bitnami/node-exporter:latest
 docker run -d --name pythonserver -p 8081:8080 --network monitor yusufinci/pythonserver:v1
 
-to launch the Prometheus monitor 
+to launch the Prometheus on monitor notwork 
 docker run -d --name prometheus -p 9090:9090 --network monitor \
 -v $(pwd)/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml \
 bitnami/prometheus:latest
@@ -22,8 +16,8 @@ to launch the Prometheus web UI in an external browser window and navigate to th
 http://localhost:9090
 
 The Prometheus application UI opens up by default in the graph endpoint.
-in the Prometheus application, click Status on the menu and choose Targets to see which targets are being monitored.
-View the status of all three node exporters
+In the Prometheus application, click Status on the menu and choose Targets to see which targets are being monitored.
+View the status of all three node exporters and pythonserver.
 Click Graph to return to the home page.
 Ensure you are on the Graph tab, and then paste the following queries and press the Execute button on the right. You can observe the details for each instance by hovering the mouse over that instance.
 node_cpu_seconds_total
